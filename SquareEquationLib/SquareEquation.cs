@@ -5,6 +5,7 @@ public class SquareEquation
     public static double[] Solve(double a, double b, double c)
     {
         double eps = 1e-9;
+        double[] no_roots = new double[] { };
         
         if (new[] {a, b, c}.Any(n => Math.Abs(n) < eps || double.IsNaN(n) || double.IsInfinity(n)))
         {
@@ -15,7 +16,6 @@ public class SquareEquation
         
         if (D <= -eps) 
         {
-            double[] no_roots = new double[] { };
             return no_roots;
         }
         else
