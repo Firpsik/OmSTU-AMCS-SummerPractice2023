@@ -1,39 +1,42 @@
-﻿﻿﻿namespace SpaceBattleLib;
-public class SpaceBattle
+﻿﻿﻿using System;
+
+
+namespace SpaceBattle;
+
+public class SpaceShip
 {
-    public double[] CurrentPosition = new double[] {double.NaN, double.NaN};
-    public double[] InstantSpeed = new double[] {double.NaN, double.NaN};
-    private bool IsValidCoordinates(double[] coord)
+    public double[] Coordinates = new double[2] { double.NaN, double.PositiveInfinity };
+    public double[] Speed = new double[2] { double.PositiveInfinity, double.NaN };
+    public void SetCoordinates(double[] coordinates)
     {
-        foreach(double a in coord)
+        this.Coordinates = coordinates;
+    }
+    public void SetSpeed(double[] speed)
+    {
+        this.Speed = speed;
+    }
+    public bool CheckCoordinates(double[] CoordinatesOrSpeed)
+    {
+        foreach (var coord in CoordinatesOrSpeed)
         {
-            if (double.IsNaN(a) || double.IsInfinity(a))
+            if (double.IsNaN(coord) || double.IsInfinity(coord))
             {
                 return false;
             }
         }
         return true;
     }
-    public SpaceBattle() {}
-    public void SetCurrentPosition(double[] position)
+    public double[] ChangeCoordinates()
     {
-        this.CurrentPosition = position;
-    }
-    public void SetInstantSpeed(double[] instantSpeed)
-    {
-        this.InstantSpeed = instantSpeed;
-    }
-    public double[] UniformMovementStep()
-    {
-        if (IsValidCoordinates(this.CurrentPosition) && IsValidCoordinates(this.InstantSpeed))
+        if (CheckCoordinates(this.Coordinates) && CheckCoordinates(this.Speed))
         {
-            this.CurrentPosition[0] += this.InstantSpeed[0];
-            this.CurrentPosition[1] += this.InstantSpeed[1];
+            this.Coordinates[0] += this.Speed[0];
+            this.Coordinates[1] += this.Speed[1];
+            return this.Coordinates;
         }
-        else 
+        else
         {
-             throw new Exception();
+            throw new Exception();
         }
-        return this.CurrentPosition;
     }
 }

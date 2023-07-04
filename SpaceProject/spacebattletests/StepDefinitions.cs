@@ -1,62 +1,75 @@
-namespace SpaceBattle.Tests;
-using SpaceBattleLib;
+using System;
+using Xunit;
 using TechTalk.SpecFlow;
+using FluentAssertions;
+using SpaceBattle;
 
-[Binding]
-public class SpaceBattle_Tests
+namespace SpacebBattle.TestsBDD.Steps
 {
-    private SpaceBattle _spaceShip = new SpaceBattle();
-    private Exception _actualException = new Exception();
-    [Given(@"космический корабль, положение в пространстве которого невозможно определить")]
-    public void CantDefinePosition()
+    [Binding]
+    public sealed class SpaceBattle_TestsBDD
     {
-        _spaceShip.SetCurrentPosition(new double[] {double.NaN, double.NaN});
-    }
-    [Given(@"имеет мгновенную скорость \((.*), (.*)\)")]
-    public void HasInstantSpeed(double x, double y)
-    {
-        _spaceShip.SetInstantSpeed(new double[] {x, y});
-    }
-    
-    [When(@"происходит прямолинейное равномерное движение без деформации")]
-    public void ExecuteUniformMovement()
-    {
-        try
+
+        private SpaceShip _spaceShip = new SpaceShip();
+        private Exception _actualException = new Exception();
+
+
+        [Given(@"космический корабль находится в точке пространства с координатами \((.*), (.*)\)")]
+        public void SpaceShipSetCoordinates(double x, double y)
         {
-            _spaceShip.UniformMovementStep();
+            _spaceShip.SetCoordinates(new double[2] { x, y });
         }
-        catch(Exception e)
+
+        [Given(@"имеет мгновенную скорость \((.*), (.*)\)")]
+        public void SpaceShipSetSpeed(double x, double y)
         {
-            _actualException = e;
+
+            _spaceShip.SetSpeed(new double[2] { x, y });
+
         }
-    }
-    [Then(@"возникает ошибка Exception")]
-    public void TrowsExceptionExpception()
-    {
-        Assert.ThrowsAsync<Exception>(() => throw _actualException);
-    }
-    [Given(@"космический корабль находится в точке пространства с координатами \((.*), (.*)\)")]
-    public void SpaceshipInPosition(double x, double y)
-    {
-        _spaceShip.SetCurrentPosition(new double[] {x,y});
-    }
-    [Given(@"скорость корабля определить невозможно")]
-    public void CantDefineInstantSpeed()
-    {
-        _spaceShip.SetInstantSpeed(new double[] {double.NaN, double.NaN});
-    }
-     [Then(@"космический корабль перемещается в точку пространства с координатами \((.*), (.*)\)")]
-    public void SpaceShipMoveToPoint(double x, double y)
-    {
-        double[] expectedCoord = new double[] {x, y};
-        for (int i = 0; i < 2; i++)
+
+
+        [When(@"происходит прямолинейное равномерное движение без деформации")]
+        public void MovementSpaceShip()
         {
-            Assert.Equal(expectedCoord[i], _spaceShip.CurrentPosition[i], 6);
+            try
+            {
+                _spaceShip.ChangeCoordinates();
+            }
+            catch (Exception a)
+            {
+                _actualException = a;
+            }
         }
-    }
-    [Given(@"изменить положение в пространстве космического корабля невозможно")]
-    public void CantChangePosition()
-    {
-        _spaceShip.InstantSpeed = new double[] {double.NaN, double.NaN};
+        [Then(@"космический корабль перемещается в точку пространства с координатами \((.*), (.*)\)")]
+        public void SpaceShipMoveDot(double x, double y)
+        {
+            var newCoordinates = new double[] { x, y };
+            for (int i = 0; i < 2; i++)
+            {
+                Assert.Equal(_spaceShip.Coordinates[i], newCoordinates[i]);
+            }
+        }
+        [Given(@"космический корабль, положение в пространстве которого невозможно определить")]
+        public void UndefinedLocation()
+        {
+            _spaceShip.SetCoordinates(new double[2] { double.NaN, double.NaN });
+        }
+        [Given(@"скорость корабля определить невозможно")]
+        public void UndefinedSpeed()
+        {
+            _spaceShip.SetSpeed(new double[2] { double.NaN, double.NaN });
+        }
+        [Then(@"возникает ошибка Exception")]
+        public void ErrorException()
+        {
+            Assert.ThrowsAsync<Exception>(() => throw _actualException);
+        }
+        [Given(@"изменить положение в пространстве космического корабля невозможно")]
+        public void CantMove()
+        {
+            _spaceShip.Speed = new double[2] { double.NaN, double.NaN };
+        }
+
     }
 }

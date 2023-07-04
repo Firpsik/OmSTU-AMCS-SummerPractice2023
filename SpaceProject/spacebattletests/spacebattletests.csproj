@@ -20,4 +20,8 @@
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\spacebattle\spacebattle.csproj" />
+  </ItemGroup>
+
 </Project>
