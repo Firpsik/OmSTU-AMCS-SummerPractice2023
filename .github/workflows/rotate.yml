@@ -17,10 +17,10 @@ jobs:
           dotnet-version: 7.0.x
 
       - name: Restore dependencies
-        run: dotnet restore spacebattle
+        run: dotnet restore ./SpaceProject/spacebattle
 
       - name: Test Build
-        run: dotnet build spacebattle --no-restore /p:ContinuousIntegrationBuild=true
+        run: dotnet build ./SpaceProject/spacebattle --no-restore /p:ContinuousIntegrationBuild=true
 
       - name: BDD test
-        run: cd spacebattletests && dotnet test /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
+        run: cd ./SpaceProject/spacebattletests && dotnet test /p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov
