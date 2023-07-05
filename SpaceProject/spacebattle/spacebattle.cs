@@ -1,4 +1,4 @@
-﻿﻿namespace spacebattle;
+﻿﻿﻿﻿﻿namespace spacebattle;
 
 public class SpaceShip
 {

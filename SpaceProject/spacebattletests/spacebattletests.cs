@@ -1,5 +1,6 @@
-using TechTalk.SpecFlow;
+using System;
 using Xunit;
+using TechTalk.SpecFlow;
 using spacebattle;
 
 namespace spacebattletests
